@@ -59,29 +59,24 @@ Flight* createFlight(int departure_time, float price, const char* source, const 
 // Function to insert a flight into the BST based on the chosen criteria (e.g., departure time and source)
 Flight* insert(Flight* root, int departure_time, float price, const char* source, const char* destination, int flightno) 
 {
-    if (root == NULL) 
-    {
+    if (root == NULL) {
         return createFlight(departure_time, price, source, destination, flightno);
     }
 
     // Choose your criteria for insertion (e.g., departure time and source)
-    if (departure_time < root->departure_time || (departure_time == root->departure_time && strcmp(source, root->source) < 0)) 
-    {
+    if (departure_time < root->departure_time || (departure_time == root->departure_time && strcmp(source, root->source) < 0)) {
         root->left = insert(root->left, departure_time, price, source, destination, flightno);
-    } 
-    else 
-    {
+    } else {
         root->right = insert(root->right, departure_time, price, source, destination, flightno);
     }
 
     return root;
 }
 
-// Function to search for flights based on "from" and "to" locations
+//Function to search for flights based on "from" and "to" locations
 Flight* searchFlights(Flight* root, const char* from, const char* to) 
 {
-    if (root == NULL) 
-    {
+    if (root == NULL) {
         return NULL;
     }
 
@@ -90,19 +85,17 @@ Flight* searchFlights(Flight* root, const char* from, const char* to)
     int toComparison = strcmp(to, root->destination);
 
     // Check if the current flight's source is within the range "from" to "to"
-    if (fromComparison <= 0 && toComparison >= 0) 
-    {
+    if (fromComparison <= 0 && toComparison >= 0) {
         return root;
-    } 
-    else if (fromComparison < 0) 
-    {
+    } else if (fromComparison < 0) {
         return searchFlights(root->left, from, to);
-    } 
-    else 
-    {
+    } else {
         return searchFlights(root->right, from, to);
     }
 }
+
+
+
 
 // Function to print flight details
 void printFlight(Flight* flight) 
@@ -130,6 +123,7 @@ Flight* populateFlights()
     root = insert(root, 1740, 190.75, "Miami","New York",4444);
     root = insert(root, 1630, 210.25, "Miami","Chicago",8052);
     root = insert(root, 1800, 280.25, "Miami","Los Angeles",2454);
+    // ... Add more flights as needed
 
     return root;
 }
@@ -181,14 +175,12 @@ SeatBooking* appendToBookingHistory(SeatBooking* head, int seatNumber, SeatClass
     strcpy(booking->phone, phone);
     strcpy(booking->email, email);
 
-    if (head == NULL) 
-    {
+    if (head == NULL) {
         return booking;
     }
 
     SeatBooking* current = head;
-    while (current->next != NULL) 
-    {
+    while (current->next != NULL) {
         current = current->next;
     }
     current->next = booking;
@@ -327,13 +319,16 @@ int main()
 
     // Search for flights based on "from" and "to" locations
     Flight* found_flight = searchFlights(root, from, to);
+   
 
 
     // Display the found flight, if any
-    if (found_flight != NULL) 
-    {
+    if (found_flight != NULL) {
+        printf("Flight found based on the criteria (from %s to %s):\n", from, to);
+        printFlight(found_flight);
 
-    // Initialize seatBookings array
+    
+
     for (int i = 0; i < NUM_ROWS; i++)
     {
         for (int j = 0; j < NUM_COLS; j++)
@@ -367,6 +362,7 @@ int main()
 
     do
     {
+        
         printf("\nMenu:\n");
         printf("1. Book a seat\n");
         printf("2. Cancel a seat\n");
@@ -476,6 +472,7 @@ int main()
 
         case 4:
             displayMenuAndGetData(from, to);
+            
             break;
         case 5:
             // Free seat bookings
